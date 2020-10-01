@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.body_background 
+{
+    background-image: URL("background.png");
+    background-position: center;
+    background-size: cover;
+}
+#myCanvas
+{
+    overflow: hidden;
+    border-width:10px;
+    background-image: url("dark_green.png"); 
+    border-style:ridge;
+}
+
+h1
+{
+	border-radius: 10px;
+	width: 220px;
+	padding: 5px;
+ }
+h3
+{
+	display: inline-block;
+}
+span
+{
+	color: white !important;	
+}
+a
+{
+	text-decoration: none;
+	font-size: 20px;
+	padding: 10px;
+    float: left;
+    border-radius: 10px;
+}
+#head_info
+{
+	width: 600px;
+	border-radius: 10px;
+	margin-bottom: 10px;
+}
+</style>
+<title>MINECRAFT</title>
+<script src="fabric.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<body class="body_background">
+	<center>
+    
+        <h1 class="btn-primary">MINECRAFT</h1>
+
+	<div id="head_info" class="btn-danger">
+		<h3>Current Width  = <span id="block_width">30</span></h3>
+		<h3>Current Height  = <span id="block_height">30</span></h3>
+    </div>
+    <button id="Instruct" onclick="Click();" style="color: blue; background-color: black;">Instructions</button>
+    
+    <canvas height="1000" width="1519" id="myCanvas"></canvas>
+    
+	</center>
+	<script>
+        var canvas = new fabric.Canvas('myCanvas');
+        blockheight = 30;
+        blockwidth = 30;
+        block = "";
+        playerX = 10;
+        playerY = 10;
+        var player_object = "";
+        function playerUpdate(){
+            fabric.Image.fromURL("player.png", function(Img){
+                player_object = Img;
+
+                player_object.scaleToWidth(150);
+                player_object.scaleToHeight(140);
+                player_object.set({
+                        top:playerY,
+                        left:playerX
+                });
+                canvas.add(player_object);
+            });
+        }
+        function newImage(getImage){
+            fabric.Image.fromURL(getImage, function(Img){
+                block = Img;
+
+                block.scaleToWidth(blockwidth);
+                block.scaleToHeight(blockheight);
+                block.set({
+                        top:playerY,
+                        left:playerX
+                });
+                canvas.add(block);
+            });
+        } 
+        window.addEventListener("keydown", my_keydown)
+        function my_keydown(e){
+            keyPressed = e.keyCode;
+            console.log(keyPressed);
+            if(keyPressed == '107'){    
+                console.log("Increase size by 10");
+                blockheight = blockheight + 10;
+                blockwidth = blockwidth + 10;
+                document.getElementById("block_width").innerHTML = blockwidth;
+                document.getElementById("block_height").innerHTML = blockheight;
+            }  
+
+            if(keyPressed == '109'){    
+                console.log("Deccrease size by 10");
+                blockheight = blockheight - 10;
+                blockwidth = blockwidth - 10;
+                document.getElementById("block_width").innerHTML = blockwidth;
+                document.getElementById("block_height").innerHTML = blockheight;
+            }  
+
+            if(keyPressed == '38'){
+                up();
+                console.log("UP");
+            }
+
+            if(keyPressed == '40'){
+                down();
+                console.log("DOWN");
+            }
+
+            if(keyPressed == '37'){
+                left();
+                console.log("LEFT");
+            }
+
+            if(keyPressed == '39'){
+                right();
+                console.log("RIGHT");
+            }
+
+            if(keyPressed == '87'){
+                newImage('wall.jpg');
+                console.log("Wall");
+            }
+
+            if(keyPressed == '71'){
+                newImage('ground.png');
+                console.log("Ground");
+            }
+
+            if(keyPressed == '76'){
+                newImage('light_green.png');
+                console.log("Light Green");
+            }
+
+            if(keyPressed == '84'){
+                newImage('trunk.jpg');
+                console.log("Trunk");
+            }
+
+            if(keyPressed == '82'){
+                newImage('roof.jpg');
+                console.log("Roof");
+            }
+
+            if(keyPressed == '89'){
+                newImage('yellow_wall.png');
+                console.log("Yellow Wall");
+            }
+
+            if(keyPressed == '85'){
+                newImage('unique.png');
+                console.log("Glowstone");
+            }
+
+            if(keyPressed == '67'){
+                newImage('cloud.jpg');
+                console.log("Cloud");
+            }
+        }
+        function Click(){
+            window.alert("Press 't' to place a tree trunk block; " + "Press 'l' to place a light green block; " + "Press 'g' to place a grass block; " 
+            + "Press 'w' to place a wall block; " + "Press 'y' to place a yellow wall block; " + "Press 'c' to place a cloud block; " + "Press 'r' to place a roof block; " +
+            "Press 'u' to place a glowstone block; " + "Press '+' to increase the block size; " + "Press '-' to decrease the block size");
+        }
+        function up(){
+            if(playerY >=30){
+                playerY = playerY - blockheight;
+                console.log("Blockheight = " + blockheight);
+                console.log("Up; X = " + playerX + "Y = " + playerY);
+                canvas.remove(player_object);
+                playerUpdate();
+            }
+        }
+        function down(){
+            if(playerY <=800){
+                playerY = playerY + blockheight;
+                console.log("Blockheight = " + blockheight);
+                console.log("Down; X = " + playerX + "Y = " + playerY);
+                canvas.remove(player_object);
+                playerUpdate();
+            }
+        }
+        function left(){
+            if(playerX >5){
+                playerX = playerX - blockwidth;
+                console.log("Blockwidth = " + blockwidth);
+                console.log("Left; X = " + playerX + "Y = " + playerY);
+                canvas.remove(player_object);
+                playerUpdate();
+            }
+        }
+        function right(){
+            if(playerX <=1350){
+                playerX = playerX + blockwidth;
+                console.log("Blockwidth = " + blockwidth);
+                console.log("Right; X = " + playerX + "Y = " + playerY);
+                canvas.remove(player_object);
+                playerUpdate();
+            }
+        }
+    </script>
+</body>
+</html>
